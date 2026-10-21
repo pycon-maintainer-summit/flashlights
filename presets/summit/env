@@ -1,0 +1,7 @@
+# Branding for the PyCon US Maintainer Summit preset.
+SITE_TITLE="PyCon US Maintainer Summit"
+SITE_SHORT_NAME="Maintainer Summit"
+SITE_DESCRIPTION="A gathering for open source Python maintainers at PyCon US"
+BRAND_PRIMARY="#a16207"
+DOCS_URL=https://pycon-maintainer-summit.github.io/docs/
+SPONSORSHIP_ENABLED=0

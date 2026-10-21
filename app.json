@@ -1,0 +1,117 @@
+{
+  "name": "PyCon US Maintainer Summit",
+  "description": "The PyCon US Maintainer Summit's Flashlights instance.",
+  "repository": "https://github.com/pycon-maintainer-summit/flashlights",
+  "keywords": [
+    "django",
+    "events",
+    "flashlights"
+  ],
+  "stack": "container",
+  "addons": [
+    {
+      "plan": "heroku-postgresql:essential-0",
+      "as": "DATABASE"
+    },
+    {
+      "plan": "heroku-redis:mini",
+      "as": "REDIS"
+    }
+  ],
+  "formation": {
+    "web": {
+      "quantity": 1,
+      "size": "basic"
+    },
+    "worker": {
+      "quantity": 1,
+      "size": "basic"
+    }
+  },
+  "env": {
+    "SECRET_KEY": {
+      "description": "Django's secret key.",
+      "generator": "secret"
+    },
+    "DJANGO_ALLOWED_HOSTS": {
+      "description": "The hostnames the portal answers on, comma-separated (the app's host, then the custom domain).",
+      "value": ".herokuapp.com,summit.flashlights.app"
+    },
+    "FERNET_KEY": {
+      "description": "Key for fields encrypted at rest. Generate one: python -c \"from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())\"",
+      "required": true
+    },
+    "EMAIL_URL": {
+      "description": "SMTP server: smtp://user:password@smtp.mailgun.org:587/?tls=true",
+      "required": true
+    },
+    "DJANGO_DEFAULT_FROM_EMAIL": {
+      "description": "The address the portal's email comes from.",
+      "value": "Maintainer Summit <noreply@mail.flashlights.app>"
+    },
+    "USE_OBJECT_STORAGE": {
+      "description": "Uploads go to an S3-compatible bucket.",
+      "value": "true"
+    },
+    "AWS_ACCESS_KEY_ID": {
+      "description": "Object storage access key (S3 API).",
+      "required": true
+    },
+    "AWS_SECRET_ACCESS_KEY": {
+      "description": "Object storage secret key.",
+      "required": true
+    },
+    "AWS_STORAGE_BUCKET_NAME": {
+      "description": "The bucket for uploads.",
+      "required": true
+    },
+    "AWS_S3_ENDPOINT_URL": {
+      "description": "The object storage endpoint, such as https://<account>.r2.cloudflarestorage.com",
+      "required": true
+    },
+    "SITE_TITLE": {
+      "description": "The community's name.",
+      "value": "PyCon US Maintainer Summit"
+    },
+    "SITE_SHORT_NAME": {
+      "description": "The navbar wordmark.",
+      "value": "Maintainer Summit"
+    },
+    "SITE_DESCRIPTION": {
+      "description": "One line about the community.",
+      "value": "A gathering for open source Python maintainers at PyCon US"
+    },
+    "BRAND_PRIMARY": {
+      "description": "The accent colour.",
+      "value": "#a16207"
+    },
+    "SITE_LOGO": {
+      "description": "Served by the instance from the app's static files.",
+      "value": "https://summit.flashlights.app/static/flashlights_summit/logo.svg"
+    },
+    "SITE_FAVICON": {
+      "description": "Served by the instance from the app's static files.",
+      "value": "https://summit.flashlights.app/static/flashlights_summit/favicon.svg"
+    },
+    "DOCS_URL": {
+      "description": "The community's own documentation.",
+      "value": "https://pycon-maintainer-summit.github.io/docs/"
+    },
+    "VOLUNTEERING_ENABLED": {
+      "description": "false hides the Volunteer hub.",
+      "value": "true"
+    },
+    "SPONSORSHIP_ENABLED": {
+      "description": "false hides sponsors, tiers and donations.",
+      "value": "false"
+    },
+    "STATS_PUBLIC": {
+      "description": "false takes the public stats pages off the site.",
+      "value": "true"
+    },
+    "EXTRA_APPS": {
+      "description": "The community's app; the image sets it, this is the record.",
+      "value": "flashlights_summit"
+    }
+  }
+}

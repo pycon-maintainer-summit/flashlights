@@ -1,0 +1,70 @@
+# The instance as the image runs it, for local use and CI: the core at its
+# pinned tag plus this app, with its own Postgres, Redis and maildev.
+# DEBUG is on so load_preset works and email is visible; production is
+# .env.example.
+name: summit-flashlights
+services:
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: flashlights
+      POSTGRES_PASSWORD: flashlights
+      POSTGRES_DB: flashlights
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "flashlights", "-d", "flashlights"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7-bullseye
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  maildev:
+    image: maildev/maildev:2.2.1
+    ports:
+      - "127.0.0.1:9007:1080"
+
+  web:
+    build: .
+    image: maintainer-summit-flashlights:local
+    command: gunicorn -c config/gunicorn.conf.py portal.wsgi:application --log-file -
+    ports:
+      - "127.0.0.1:8007:8000"
+    env_file: presets/summit/env
+    environment: &env
+      DEBUG: "1"
+      SECRET_KEY: local-only
+      DJANGO_ALLOWED_HOSTS: localhost,127.0.0.1
+      DATABASE_URL: postgresql://flashlights:flashlights@postgres:5432/flashlights
+      CELERY_BROKER_URL: redis://redis:6379/0
+      DJANGO_EMAIL_HOST: maildev
+      DJANGO_EMAIL_PORT: "1025"
+      DJANGO_DEFAULT_FROM_EMAIL: Maintainer Summit <noreply@mail.flashlights.app>
+      SITE_LOGO: http://127.0.0.1:8007/static/flashlights_summit/logo.svg
+      SITE_FAVICON: http://127.0.0.1:8007/static/flashlights_summit/favicon.svg
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  worker:
+    image: maintainer-summit-flashlights:local
+    command: sh bin/worker
+    env_file: presets/summit/env
+    environment: *env
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+volumes:
+  pgdata:

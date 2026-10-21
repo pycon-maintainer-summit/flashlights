@@ -1,0 +1,14 @@
+# Heroku builds the image from the Dockerfile (the pinned core plus this
+# app) and runs the core's minimum formation: web and worker, with the
+# release step before new dynos take traffic.
+build:
+  docker:
+    web: Dockerfile
+    worker: Dockerfile
+release:
+  image: web
+  command:
+    - python manage.py createcachetable && python manage.py migrate
+run:
+  web: gunicorn -c config/gunicorn.conf.py portal.wsgi:application --log-file -
+  worker: sh bin/worker

@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "flashlights-summit"
+version = "2026.1"
+description = "The PyCon US Maintainer Summit's app for its Flashlights instance"
+requires-python = ">=3.14"
+# The core image brings Django and everything else; the app adds nothing.
+dependencies = []
+
+[tool.setuptools]
+packages = ["flashlights_summit"]
+
+[tool.setuptools.package-data]
+flashlights_summit = ["static/**/*", "templates/**/*"]
+
+# The app's tests run inside the image, from the core's working directory,
+# against the core's settings.
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "portal.settings"
+
+# The core's lint settings, so a file moves between the two without
+# reformatting; the core's apps are first party here too.
+[tool.black]
+line-length = 88
+
+[tool.isort]
+profile = "black"
+known_first_party = ["portal", "affiliations", "common", "portal_account", "speakers", "sponsorship", "ticketing", "volunteer", "flashlights_summit"]

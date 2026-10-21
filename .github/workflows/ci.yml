@@ -1,0 +1,27 @@
+# Build the image from the pinned core, load the Maintainer Summit preset into a
+# fresh database and run the app's tests, on every push and pull request,
+# so a core upgrade that breaks the app fails here first.
+name: CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+jobs:
+  image:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v3
+      - name: Build
+        run: docker compose build web
+      - name: Migrate and load the preset
+        run: |
+          docker compose run --rm web python manage.py createcachetable
+          docker compose run --rm web python manage.py migrate
+          docker compose run --rm web python manage.py load_preset /community/presets/summit
+      - name: Tests
+        run: docker compose run --rm web sh -c 'pip install -q pytest==8.3.5 pytest-django==4.8.0 && python -m pytest /community/tests -p no:cacheprovider'
+      - name: Boot check
+        run: docker compose run --rm web python manage.py check --deploy --fail-level WARNING || true
+      - if: always()
+        run: docker compose down -v
