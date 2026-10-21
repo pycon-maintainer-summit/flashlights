@@ -5,7 +5,8 @@ and a few registrations imported from a PyCon US-style CSV. In person, the
 team records, no community chat. People's emails are invented (example.org).
 
 Loaded by ``manage.py load_preset``; it lives in the community's own
-repository, not the core's, because it is a real community's data. All passwords: password123.
+repository, not the core's, because it is a real community's data.
+All passwords: password123.
 """
 
 from datetime import date, datetime, timedelta
@@ -748,9 +749,9 @@ def run(stdout):
     )
     seed_new_edition(upcoming)
 
-    # Access comes from the active edition's teams: the four
-    # organizers run 2027 through the Organizers team, Mariatta leading and
-    # the only superuser; Priya reviews proposals without running the rest.
+    # Access comes from the active edition's teams: the four organizers run
+    # 2027 through the Organizers team, Mariatta leading and the only
+    # superuser; Priya reviews proposals without running the rest.
     def preset_team(name, open_=False):
         team, created = Team.objects.get_or_create(
             conference=upcoming,

@@ -1,6 +1,7 @@
 # Build the image from the pinned core, load the Maintainer Summit preset into a
 # fresh database and run the app's tests, on every push and pull request,
-# so a core upgrade that breaks the app fails here first.
+# so a core upgrade that breaks the app fails here first; a second job lints
+# the repository with the core's tools.
 name: CI
 on:
   push:

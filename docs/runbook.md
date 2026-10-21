@@ -14,14 +14,18 @@ has the general case; this page is what is specific to the Maintainer Summit.
    `heroku create maintainer-summit --stack container`,
    `heroku addons:create heroku-postgresql:essential-0`,
    `heroku addons:create heroku-redis:mini`, then `heroku config:set` with
-   every line of `.env.example` (the boot fails at once, naming each
-   missing variable, until all the required ones are set), and after the
-   first deploy `heroku ps:scale web=1 worker=1`.
+   every variable that has a value in `.env.example` plus a generated
+   `SECRET_KEY` (the button generates one; by hand, `python -c "import
+   secrets; print(secrets.token_urlsafe(50))"`). Leave `DATABASE_URL` and
+   `REDIS_URL` alone: the add-ons set them. The boot fails at once, naming
+   each missing variable, until every required one is set.
 2. Set the secrets the platform cannot generate: `FERNET_KEY`, `EMAIL_URL`
    (the Mailgun SMTP credentials for `mail.flashlights.app`), and the four
    bucket variables.
 3. Push, or connect the GitHub repository and deploy `main`. The release
    step runs `createcachetable` and `migrate` before the dynos take traffic.
+   An app created by hand then needs `heroku ps:scale web=1 worker=1`; the
+   button scales both from `app.json`.
 4. Add the custom domain: `heroku domains:add summit.flashlights.app`, then the
    DNS record it prints, then `heroku certs:auto:enable`.
 5. On the instance: `heroku run python manage.py set_site_domain summit.flashlights.app`,
