@@ -1,7 +1,7 @@
 # PyCon US Maintainer Summit on Flashlights
 
 The PyCon US Maintainer Summit's own [Flashlights](https://github.com/mariatta/flashlights)
-instance: a one-day summit at PyCon US that takes session proposals in the portal, an in-person program in one room, organizers and volunteers, and registrations imported from PyCon US as a CSV. The public site is <https://pycon-maintainer-summit.github.io/>.
+instance: a one-day summit at PyCon US with session proposals taken in the portal, an in-person program in one room, organizers and volunteers, and registrations imported from PyCon US as a CSV. The public site is <https://pycon-maintainer-summit.github.io/>.
 
 This repository holds only what is the Maintainer Summit's. The core is consumed
 as an image, never copied: `Dockerfile` starts `FROM
