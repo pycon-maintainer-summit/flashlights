@@ -15,10 +15,11 @@ has the general case; this page is what is specific to the Maintainer Summit.
    `heroku addons:create heroku-postgresql:essential-0`,
    `heroku addons:create heroku-redis:mini`, then `heroku config:set` with
    every variable that has a value in `.env.example` plus a generated
-   `SECRET_KEY` (the button generates one; by hand, `python -c "import
-   secrets; print(secrets.token_urlsafe(50))"`). Leave `DATABASE_URL` and
-   `REDIS_URL` alone: the add-ons set them. The boot fails at once, naming
-   each missing variable, until every required one is set.
+   `SECRET_KEY` (the button generates one; by hand,
+   `python -c "import secrets; print(secrets.token_urlsafe(50))"`).
+   Leave `DATABASE_URL` and `REDIS_URL` alone: the add-ons set them. The
+   boot fails at once, naming each missing variable, until every required
+   one is set.
 2. Set the secrets the platform cannot generate: `FERNET_KEY`, `EMAIL_URL`
    (the Mailgun SMTP credentials for `mail.flashlights.app`), and the four
    bucket variables.
