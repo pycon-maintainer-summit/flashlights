@@ -67,3 +67,13 @@ and rollback.
    the tests against the new core.
 4. Merge and deploy; the release step runs the migrations. The runbook has
    the rollback.
+
+## Licence
+
+This repository is under the MIT License, in `LICENSE`, so any community can
+copy it as the starting point for its own Flashlights app. The core it runs
+on is separate: Flashlights is free software under the GNU Affero General
+Public License version 3, with a permission to run a modified copy for your
+own events, as its [LICENSE](https://github.com/mariatta/flashlights/blob/main/LICENSE)
+says. A running instance combines the two, so the core's licence governs
+the instance, and this repository's licence governs only what is here.
