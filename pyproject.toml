@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=68"]
+requires = ["setuptools>=77"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -7,7 +7,7 @@ name = "flashlights-summit"
 version = "2026.1"
 description = "The PyCon US Maintainer Summit's app for its Flashlights instance"
 requires-python = ">=3.14"
-license = {text = "MIT"}
+license = "MIT"
 # The core image brings Django and everything else; the app adds nothing.
 dependencies = []
 
