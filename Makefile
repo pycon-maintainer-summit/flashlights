@@ -25,7 +25,7 @@ lint: ## black, isort and flake8 (pip install -r requirements-dev.txt)
 	black --check . && isort --check-only . && flake8
 
 test: ## Run the app's tests inside the image (pytest is installed into the container first)
-	$(COMPOSE) run --rm web sh -c "pip install -q pytest==8.3.5 pytest-django==4.8.0 && python -m pytest /community/tests -p no:cacheprovider"
+	$(COMPOSE) run --rm web sh -c "pip install -q -r /community/requirements-test.txt && python -m pytest /community/tests -p no:cacheprovider"
 
 down: ## Stop everything and drop the database
 	$(COMPOSE) down -v

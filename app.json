@@ -93,10 +93,6 @@
       "description": "Served by the instance from the app's static files.",
       "value": "https://summit.flashlights.app/static/flashlights_summit/favicon.svg"
     },
-    "DOCS_URL": {
-      "description": "The community's own documentation.",
-      "value": "https://pycon-maintainer-summit.github.io/docs/"
-    },
     "VOLUNTEERING_ENABLED": {
       "description": "false hides the Volunteer hub.",
       "value": "true"

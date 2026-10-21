@@ -20,8 +20,15 @@ jobs:
           docker compose run --rm web python manage.py migrate
           docker compose run --rm web python manage.py load_preset /community/presets/summit
       - name: Tests
-        run: docker compose run --rm web sh -c 'pip install -q pytest==8.3.5 pytest-django==4.8.0 && python -m pytest /community/tests -p no:cacheprovider'
-      - name: Boot check
-        run: docker compose run --rm web python manage.py check --deploy --fail-level WARNING || true
+        run: docker compose run --rm web sh -c 'pip install -q -r /community/requirements-test.txt && python -m pytest /community/tests -p no:cacheprovider'
       - if: always()
         run: docker compose down -v
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+      - run: pip install -r requirements-dev.txt
+      - run: make lint

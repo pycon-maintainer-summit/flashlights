@@ -27,7 +27,7 @@ def test_the_images_the_identity_variables_point_at_exist(name):
 
 
 @pytest.mark.django_db
-def test_the_preset_loads(capsys):
+def test_the_preset_loads():
     with override_settings(DEBUG=True):
         call_command("load_preset", str(PRESET))
     assert Conference.objects.exists()

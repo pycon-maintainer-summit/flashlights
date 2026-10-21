@@ -7,12 +7,16 @@ has the general case; this page is what is specific to the Maintainer Summit.
 
 ## First deployment
 
-1. Create the Heroku app from this repository: the Deploy button, or
-   `heroku create maintainer-summit --stack container` followed by
-   `heroku addons:create heroku-postgresql:essential-0` and
-   `heroku addons:create heroku-redis:mini`. `app.json` lists every
-   variable with a description; `.env.example` is the same list with the
-   Maintainer Summit's values.
+1. Create the Heroku app from this repository. The Deploy button in the
+   README reads `app.json`: it creates the app on the container stack with
+   the Postgres and Redis add-ons, the `web` and `worker` formation and
+   every variable that has a value, and asks for the rest. By hand instead:
+   `heroku create maintainer-summit --stack container`,
+   `heroku addons:create heroku-postgresql:essential-0`,
+   `heroku addons:create heroku-redis:mini`, then `heroku config:set` with
+   every line of `.env.example` (the boot fails at once, naming each
+   missing variable, until all the required ones are set), and after the
+   first deploy `heroku ps:scale web=1 worker=1`.
 2. Set the secrets the platform cannot generate: `FERNET_KEY`, `EMAIL_URL`
    (the Mailgun SMTP credentials for `mail.flashlights.app`), and the four
    bucket variables.
@@ -32,10 +36,10 @@ has the general case; this page is what is specific to the Maintainer Summit.
    fresh database, the tests pass.
 3. Deploy. Watch `heroku logs --tail --dyno release` for the migrations,
    then `--dyno web` and `--dyno worker`.
-4. If the help links are the core's (`DOCS_URL` unset), they follow the
-   image on their own; the Maintainer Summit sets `DOCS_URL` to its own site,
-   which links to the core docs at the pinned version, so move that link
-   by hand.
+4. The help links follow the image on their own while `DOCS_URL` is unset.
+   Once the summit's docs have a Flashlights page, set `DOCS_URL` to it; on
+   each core upgrade, point that page's link at the core docs for the new
+   version by hand.
 
 ## Rolling back
 
@@ -51,4 +55,4 @@ the database from the add-on's backup first.
 | Database | the Postgres add-on; `heroku pg:backups:capture` before a risky migration |
 | Uploads | the bucket named by `AWS_STORAGE_BUCKET_NAME` |
 | Outgoing mail | the Mailgun logs for `mail.flashlights.app` |
-| Errors | Sentry, when `SENTRY_DSN` is set (it sends no personal data unless `SENTRY_SEND_DEFAULT_PII` is on) |
+| Errors | Sentry, when `SENTRY_SDK_DSN` is set (it sends no personal data unless `SENTRY_SEND_DEFAULT_PII` is on) |

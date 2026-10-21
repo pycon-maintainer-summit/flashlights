@@ -4,8 +4,8 @@
 and a few registrations imported from a PyCon US-style CSV. In person, the
 team records, no community chat. People's emails are invented (example.org).
 
-Loaded by ``manage.py load_preset``; kept out of the Flashlights repository
-because it is a real community's data. All passwords: password123.
+Loaded by ``manage.py load_preset``; it lives in the community's own
+repository, not the core's, because it is a real community's data. All passwords: password123.
 """
 
 from datetime import date, datetime, timedelta
@@ -678,7 +678,7 @@ def run(stdout):
         User.objects.get(email=email_for("Mike Fiedler")).username,
     )
 
-    # ------------------------------------------- decisions 0012 and 0013 since
+    # ------------------------------- the venue, its rooms and the ticketing
 
     center, _ = Venue.objects.update_or_create(
         name="Long Beach Convention & Entertainment Center",
@@ -748,7 +748,7 @@ def run(stdout):
     )
     seed_new_edition(upcoming)
 
-    # Access comes from the active edition's teams (decision 0014): the four
+    # Access comes from the active edition's teams: the four
     # organizers run 2027 through the Organizers team, Mariatta leading and
     # the only superuser; Priya reviews proposals without running the rest.
     def preset_team(name, open_=False):
