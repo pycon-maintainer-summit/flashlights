@@ -20,6 +20,7 @@ is the contract this repository relies on.
 | `presets/summit/` | The demo data (`seed.py`) and branding (`env`) for a local or review instance, loaded with the core's `manage.py load_preset` |
 | `compose.yml`, `Makefile` | Run the instance locally from the image, on <http://127.0.0.1:8007/> |
 | `app.json`, `heroku.yml` | The Heroku deployment: add-ons, processes, every variable with a description |
+| `Procfile` | The same processes for hosts that read one, such as Cabotage |
 | `.env.example` | The production variables, with the Maintainer Summit's values filled in where they are not secrets |
 | `docs/runbook.md` | Deploying, upgrading and rolling back |
 | `tests/` | The app's tests, run inside the image against the pinned core |

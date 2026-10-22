@@ -6,6 +6,7 @@ configuration apply."""
 from pathlib import Path
 
 import pytest
+import yaml
 from django.conf import settings
 from django.contrib.staticfiles import finders
 from django.core.management import call_command
@@ -13,7 +14,8 @@ from django.test import override_settings
 
 from portal.models import Conference
 
-PRESET = Path("/community/presets/summit")
+COMMUNITY = Path("/community")
+PRESET = COMMUNITY / "presets/summit"
 
 
 def test_the_app_is_loaded_ahead_of_the_core():
@@ -31,3 +33,18 @@ def test_the_preset_loads():
     with override_settings(DEBUG=True):
         call_command("load_preset", str(PRESET))
     assert Conference.objects.exists()
+
+
+def test_the_procfile_and_heroku_yml_run_the_same_processes():
+    """Cabotage reads the Procfile and Heroku reads heroku.yml; the release
+    step and the two required processes must not drift apart."""
+    procfile = {}
+    for line in (COMMUNITY / "Procfile").read_text().splitlines():
+        line = line.strip()
+        if line and not line.startswith("#"):
+            name, command = line.split(":", 1)
+            procfile[name] = command.strip()
+    heroku = yaml.safe_load((COMMUNITY / "heroku.yml").read_text())
+    assert procfile["release"] == heroku["release"]["command"][0]
+    for name in ("web", "worker"):
+        assert procfile[name] == heroku["run"][name]
