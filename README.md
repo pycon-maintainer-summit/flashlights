@@ -5,10 +5,10 @@ instance: a one-day summit at PyCon US with session proposals taken in the porta
 
 This repository holds only what is the Maintainer Summit's. The core is consumed
 as an image, never copied: `Dockerfile` starts `FROM
-ghcr.io/mariatta/flashlights:0.1.0` and adds the `flashlights_summit` app, which the
+ghcr.io/mariatta/flashlights:0.2.0` and adds the `flashlights_summit` app, which the
 core loads through `EXTRA_APPS`. Upgrading the core is a one-line change to
 that tag, in a pull request that CI checks against the Maintainer Summit's own
-data. The core's [community apps guide](https://docs.flashlights.app/0.1.0/developer/community_apps/)
+data. The core's [community apps guide](https://docs.flashlights.app/0.2.0/developer/community_apps/)
 is the contract this repository relies on.
 
 ## What is here
@@ -55,7 +55,7 @@ and rollback.
 - A Maintainer Summit need the core cannot meet by configuration is a core
   extension point first (a setting, a signal, a template block), then this
   app uses it. Copying a core template into `flashlights_summit/templates/` is the last
-  resort, and the [adapting guide](https://docs.flashlights.app/0.1.0/user/adapting/)
+  resort, and the [adapting guide](https://docs.flashlights.app/0.2.0/user/adapting/)
   says what a copy costs at upgrade time.
 
 ## Upgrading the core
