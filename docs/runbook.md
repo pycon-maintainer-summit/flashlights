@@ -2,7 +2,7 @@
 
 The instance runs on Heroku from this repository's image, under
 `summit.flashlights.app`, with mail through Mailgun and uploads in an
-S3-compatible bucket. The core's [deployment guide](https://docs.flashlights.app/0.1.0/developer/deployment/)
+S3-compatible bucket. The core's [deployment guide](https://docs.flashlights.app/0.2.0/developer/deployment/)
 has the general case; this page is what is specific to the Maintainer Summit.
 
 ## First deployment
@@ -31,7 +31,7 @@ has the general case; this page is what is specific to the Maintainer Summit.
    DNS record it prints, then `heroku certs:auto:enable`.
 5. On the instance: `heroku run python manage.py set_site_domain summit.flashlights.app`,
    then create the first organiser account and give it the Organizers team
-   (the core's [getting started guide](https://docs.flashlights.app/0.1.0/user/get_started/)).
+   (the core's [getting started guide](https://docs.flashlights.app/0.2.0/user/get_started/)).
 
 ## Upgrading the core
 
