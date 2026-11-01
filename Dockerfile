@@ -2,7 +2,7 @@
 # repository's app. Upgrading the core is a change to the tag on the first
 # line. The second collectstatic adds the app's static files to the image,
 # with the placeholder values the core's own build uses.
-FROM ghcr.io/mariatta/flashlights:0.1.0
+FROM ghcr.io/mariatta/flashlights:0.2.0
 COPY . /community
 RUN pip install --no-cache-dir /community
 ENV EXTRA_APPS=flashlights_summit
