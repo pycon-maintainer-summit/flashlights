@@ -1,0 +1,35 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: flashlights
+spec:
+  instances: 2
+  imageName: ghcr.io/cloudnative-pg/postgresql:17.2
+  certificates:
+    serverTLSSecret: flashlights-tls
+    serverCASecret: operators-ca-crt
+  storage:
+    size: 10Gi
+  bootstrap:
+    initdb:
+      database: flashlights
+      owner: flashlights
+  backup:
+    barmanObjectStore:
+      destinationPath: s3://cnpg-backup/postgres/flashlights
+      endpointURL: https://minio-api.us-east-2.psfhosted.computer
+      s3Credentials:
+        accessKeyId:
+          key: ACCESS_KEY_ID
+          name: minio-creds
+        secretAccessKey:
+          key: ACCESS_SECRET_KEY
+          name: minio-creds
+    target: primary
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: flashlights-tls
+  labels:
+    cnpg.io/reload: ""

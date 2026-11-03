@@ -1,0 +1,36 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: flashlights-certmanager
+spec:
+  secretName: flashlights-tls
+  duration: 2160h # 90d
+  renewBefore: 360h # 15d
+  subject:
+    organizations:
+    - maintainer-summit
+  commonName: flashlights
+  isCA: false
+  privateKey:
+    algorithm: ECDSA
+    size: 256
+  usages:
+  - digital signature
+  - key encipherment
+  dnsNames:
+  - flashlights-rw
+  - flashlights-rw.postgres
+  - flashlights-rw.postgres.svc
+  - flashlights-rw.postgres.svc.cluster.local
+  - flashlights-r
+  - flashlights-r.postgres
+  - flashlights-r.postgres.svc
+  - flashlights-r.postgres.svc.cluster.local
+  - flashlights-ro
+  - flashlights-ro.postgres
+  - flashlights-ro.postgres.svc
+  - flashlights-ro.postgres.svc.cluster.local
+  issuerRef:
+    name: operators-ca-issuer
+    kind: ClusterIssuer
+    group: cert-manager.io
