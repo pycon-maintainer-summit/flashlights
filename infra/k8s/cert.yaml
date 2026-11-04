@@ -18,18 +18,18 @@ spec:
   - digital signature
   - key encipherment
   dnsNames:
-  - flashlights-rw
-  - flashlights-rw.redis
-  - flashlights-rw.redis.svc
-  - flashlights-rw.redis.svc.cluster.local
-  - flashlights-r
-  - flashlights-r.redis
-  - flashlights-r.redis.svc
-  - flashlights-r.redis.svc.cluster.local
-  - flashlights-ro
-  - flashlights-ro.redis
-  - flashlights-ro.redis.svc
-  - flashlights-ro.redis.svc.cluster.local
+  - flashlights
+  - flashlights.redis
+  - flashlights.redis.svc
+  - flashlights.redis.svc.cluster.local
+  - flashlights-0
+  - flashlights-0.redis
+  - flashlights-0.redis.svc
+  - flashlights-0.redis.svc.cluster.local
+  - flashlights-1
+  - flashlights-1.redis
+  - flashlights-1.redis.svc
+  - flashlights-1.redis.svc.cluster.local
   issuerRef:
     name: operators-ca-issuer
     kind: ClusterIssuer
