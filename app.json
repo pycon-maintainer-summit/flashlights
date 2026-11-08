@@ -93,6 +93,10 @@
       "description": "Served by the instance from the app's static files.",
       "value": "https://summit.flashlights.app/static/flashlights_summit/favicon.svg"
     },
+    "TERMS_URL": {
+      "description": "The Terms of Service on the public site; linked from the signup agreement, the account agreements page and the footer.",
+      "value": "https://pycon-maintainer-summit.github.io/docs/terms-of-service/"
+    },
     "VOLUNTEERING_ENABLED": {
       "description": "false hides the Volunteer hub.",
       "value": "true"
