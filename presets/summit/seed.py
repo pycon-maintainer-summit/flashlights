@@ -27,6 +27,7 @@ from speakers.constants import (
     EventFormat,
     Recordings,
     RoomKind,
+    SessionLevel,
 )
 from speakers.lifecycle import confirm_session_if_ready
 from speakers.models import (
@@ -42,7 +43,7 @@ from speakers.models import (
 )
 from speakers.program_types import presenter_role, seed_program_types, session_type
 from speakers.seeds import seed_checklists, seed_new_edition
-from speakers.services import accept_invitation, send_invitation
+from speakers.services import accept_invitation, send_invitation, submit_proposal
 from ticketing.models import TicketingSettings
 from ticketing.sync import import_csv
 from volunteer.constants import ApplicationStatus, Region
@@ -53,6 +54,12 @@ from volunteer.permission_presets import PRESETS, permissions_for
 PASSWORD = "password123"
 SITE = "https://pycon-maintainer-summit.github.io"
 PACIFIC = ZoneInfo("America/Los_Angeles")
+PROPOSALS_INTRO = (
+    "The summit is an afternoon-to-evening program of talks, lightning talks "
+    "and roundtables for people who maintain open source Python projects. "
+    f"Read the [call for proposals guide]({SITE}/docs/cfp-guide/) before you "
+    "submit."
+)
 
 
 def add_summit_types(edition):
@@ -113,6 +120,7 @@ def run(stdout):
             start_date=day,
             end_date=end or day,
             coc_url=f"{SITE}/docs/code-of-conduct/",
+            website_url=f"{SITE}/events/{slug}/",
             schedule_url=f"{SITE}/events/{slug}/topics" if day else None,
             volunteer_application_open=False,
             sponsorship_open=False,
@@ -375,12 +383,7 @@ def run(stdout):
     settings_row.proposals_open = False
     settings_row.media_for_speakers = False
     settings_row.auto_transcribe = False
-    settings_row.proposals_intro_md = (
-        "The summit is an afternoon-to-evening program of talks, lightning talks "
-        "and roundtables for people who maintain open source Python projects. "
-        f"Read the [call for proposals guide]({SITE}/docs/cfp-guide/) before you "
-        "submit. The 2027 call opens on November 16."
-    )
+    settings_row.proposals_intro_md = PROPOSALS_INTRO
     settings_row.save()
     seed_program_types(summit)
     seed_checklists(summit)
@@ -735,19 +738,80 @@ def run(stdout):
 
     # ------------------------------------------------------- 2027, the active one
     # 2026 has happened; 2027 is the edition being prepared, with its call
-    # for proposals not open yet. Its speaker module is on, so it has the
-    # default checklists, the summit's types and its intro.
+    # for proposals open, as it will be from November 16, 2026, and its volunteer
+    # applications closed. Its speaker module is on, so it has the default
+    # checklists, the summit's types and its intro.
     upcoming = editions[2027]
     upcoming.is_active = True
-    upcoming.banner_text = "The 2027 call for proposals opens November 16."
+    upcoming.banner_text = "The 2027 call for proposals is open."
     upcoming.save()
     SpeakerSettings.objects.filter(conference=upcoming).update(
         speaker_module_enabled=True,
-        proposals_open=False,
+        proposals_open=True,
         organizers_email="",
-        proposals_intro_md=settings_row.proposals_intro_md,
+        proposals_intro_md=PROPOSALS_INTRO,
     )
     seed_new_edition(upcoming)
+
+    # One proposal waiting for an answer, from two of the invented
+    # volunteers, with a page of its own. Loading mails nobody: withdrawing
+    # it and sending it again sends each of them a copy.
+    def presenter_2027(username, tz):
+        user = User.objects.get(username=username)
+        presenter, _ = Presenter.objects.get_or_create(
+            conference=upcoming,
+            email=user.email,
+            defaults={
+                "display_name": user.get_full_name(),
+                "timezone": tz,
+                "user": user,
+            },
+        )
+        return presenter
+
+    proposer = presenter_2027("tomas_k", "Europe/Warsaw")
+    co_presenter = presenter_2027("yuki_o", "Asia/Tokyo")
+    talk = session_type(upcoming, "TALK")
+    proposed, created = Session.objects.get_or_create(
+        conference=upcoming,
+        title="Handing Over a Project Without Dropping It",
+        defaults={
+            "kind": talk,
+            "delivery": talk.default_delivery,
+            "duration_minutes": talk.default_duration_minutes,
+            "language": "en",
+            "level": SessionLevel.ALL,
+            "summary_md": (
+                "What two maintainers learned passing a library on to new hands: "
+                "the access, the release keys and the parts nobody wrote down."
+            ),
+            "outline_md": (
+                "1. Deciding it is time\n"
+                "2. Finding the next maintainers\n"
+                "3. A checklist for the handover\n"
+                "4. The first release without us"
+            ),
+            "audience_md": "Maintainers thinking about stepping back, and those "
+            "who might take over.",
+        },
+    )
+    if created:
+        for order, presenter in enumerate((proposer, co_presenter)):
+            SessionPresenter.objects.create(
+                session=proposed,
+                presenter=presenter,
+                role=talk.default_role,
+                is_required=True,
+                order=order,
+            )
+        submit_proposal(proposer, proposed)
+    print("Proposal waiting for an answer:", proposed.title)
+    print("  proposed by tomas_k, with yuki_o; to see the copies, sign in as")
+    print("  tomas_k, withdraw it and send it again")
+    print(
+        "  dani_r has neither proposed nor applied for 2027: Get started offers "
+        "only Propose a session"
+    )
 
     # Access comes from the active edition's teams: the four organizers run
     # 2027 through the Organizers team, Mariatta leading and the only
