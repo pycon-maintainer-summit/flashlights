@@ -56,7 +56,7 @@ SITE = "https://pycon-maintainer-summit.github.io"
 PACIFIC = ZoneInfo("America/Los_Angeles")
 PROPOSALS_INTRO = (
     "The summit is an afternoon-to-evening program of talks, lightning talks "
-    "and roundtables, bringing together maintainers, contributors, "
+    "and roundtables. It brings together maintainers, contributors, "
     "researchers, policymakers, and everyone invested in the health and "
     "sustainability of the open source Python ecosystem. "
     f"Read the [call for proposals guide]({SITE}/docs/cfp-guide/) before you "
