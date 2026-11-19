@@ -2,6 +2,6 @@
 SITE_TITLE="PyCon US Maintainer Summit"
 SITE_SHORT_NAME="Maintainer Summit"
 SITE_DESCRIPTION="A gathering for open source Python maintainers at PyCon US"
-BRAND_PRIMARY="#a16207"
+BRAND_PRIMARY="#e80710"
 TERMS_URL="https://pycon-maintainer-summit.github.io/docs/terms-of-service/"
 SPONSORSHIP_ENABLED=0

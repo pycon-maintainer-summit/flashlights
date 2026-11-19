@@ -83,7 +83,7 @@
     },
     "BRAND_PRIMARY": {
       "description": "The accent colour.",
-      "value": "#a16207"
+      "value": "#e80710"
     },
     "SITE_LOGO": {
       "description": "Served by the instance from the app's static files.",
