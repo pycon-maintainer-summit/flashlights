@@ -1,7 +1,7 @@
 # Branding for the PyCon US Maintainer Summit preset.
 SITE_TITLE="PyCon US Maintainer Summit"
 SITE_SHORT_NAME="Maintainer Summit"
-SITE_DESCRIPTION="A gathering for open source Python maintainers at PyCon US"
+SITE_DESCRIPTION="Bringing together maintainers, contributors, researchers, policymakers, and everyone invested in the health and sustainability of the open source Python ecosystem."
 BRAND_PRIMARY="#e80710"
 TERMS_URL="https://pycon-maintainer-summit.github.io/docs/terms-of-service/"
 SPONSORSHIP_ENABLED=0
